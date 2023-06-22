@@ -75,10 +75,9 @@ where
         let queue_strategy = pool.statics.queue_strategy;
 
         // Queue it in the idle queue
-        let conn = IdleConn::from(conn);
         match queue_strategy {
-            QueueStrategy::Fifo => self.conns.push_back(conn),
-            QueueStrategy::Lifo => self.conns.push_front(conn),
+            QueueStrategy::Fifo => self.conns.push_back(IdleConn::from(conn)),
+            QueueStrategy::Lifo => self.conns.push_front(IdleConn::from(conn)),
         };
 
         self.notify.notify_one()
